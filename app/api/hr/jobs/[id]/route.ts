@@ -16,11 +16,11 @@ async function getHR(request: NextRequest) {
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const hr = await getHR(request);
   if (!hr) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const { title, company, location, type, salary, category, description, requirements, benefits } = await request.json();
@@ -45,11 +45,11 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const hr = await getHR(request);
   if (!hr) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const result = await sql`DELETE FROM jobs WHERE id = ${id} AND hr_id = ${hr.id} RETURNING id`;
