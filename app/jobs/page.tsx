@@ -362,15 +362,9 @@ export default function JobsPage() {
               <div className="p-8 border-t-[4px] border-black bg-white flex flex-col md:flex-row gap-4 sticky bottom-0 z-10 shadow-[0px_-8px_20px_rgba(0,0,0,0.1)]">
                 <button 
                   onClick={() => router.push(`/dashboard?job=${selectedJob.id}`)}
-                  className="flex-1 bg-black text-white font-black py-4 px-8 border-[3px] border-black hover:bg-zinc-800 transition-all text-xl uppercase italic tracking-tighter active:translate-x-[4px] active:translate-y-[4px] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:shadow-none"
+                  className="w-full bg-black text-white font-black py-4 px-8 border-[3px] border-black hover:bg-zinc-800 transition-all text-xl uppercase italic tracking-tighter active:translate-x-[4px] active:translate-y-[4px] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:shadow-none"
                 >
                   Apply with Agent →
-                </button>
-                <button 
-                  onClick={() => setSelectedJob(null)}
-                  className="flex-1 bg-[#BEF264] text-black font-black py-4 px-8 border-[3px] border-black hover:bg-[#A9D658] transition-all text-xl uppercase italic tracking-tighter active:translate-x-[4px] active:translate-y-[4px] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:shadow-none"
-                >
-                  Manual Apply
                 </button>
               </div>
             </div>

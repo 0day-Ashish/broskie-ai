@@ -14,8 +14,10 @@ export async function POST(request) {
     const buffer = Buffer.from(bytes);
 
     // Extract text from PDF
-    const pdfParse = (await import("pdf-parse")).default;
-    const data = await pdfParse(buffer);
+    const { PDFParse } = await import("pdf-parse");
+    const parser = new PDFParse({ data: buffer });
+    const data = await parser.getText();
+    await parser.destroy();
     const resumeText = data.text;
 
     // Use Gemini to extract applicant details
@@ -51,7 +53,7 @@ Return JSON:
 
     return NextResponse.json({
       text: resumeText,
-      pages: data.numpages,
+      pages: data.total,
       applicant: applicantDetails
     });
   } catch (error) {

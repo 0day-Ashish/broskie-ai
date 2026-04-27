@@ -9,6 +9,7 @@ export default function Home() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showNotification, setShowNotification] = useState(true);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   // Function to handle testimonial scrolling
   const scrollRef = useRef<HTMLDivElement>(null);
   const handleScroll = (direction: 'left' | 'right') => {
@@ -120,11 +121,12 @@ export default function Home() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('broskie_token');
+    localStorage.removeItem("broskie_token");
     localStorage.removeItem('broskie_user');
     localStorage.removeItem('broskie_user_role');
     setIsLoggedIn(false);
     setUserName('');
+    setShowLogoutModal(false);
   };
 
   const handleSubscribe = async (e: React.FormEvent) => {
@@ -366,7 +368,22 @@ export default function Home() {
               <div className="absolute top-full mt-2 right-0 w-48 bg-white border-[3px] border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] z-[60] py-2 animate-in fade-in slide-in-from-top-2 duration-200">
                 <button
                   onClick={() => {
-                    handleLogout();
+                    const role = localStorage.getItem('broskie_user_role');
+                    router.push(role === 'hr' ? '/hr/dashboard' : '/dashboard');
+                    setShowUserDropdown(false);
+                  }}
+                  className="w-full text-left px-4 py-2 font-black text-sm uppercase hover:bg-[#BEF264] transition-colors flex items-center gap-2 border-b-2 border-black"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                    <line x1="3" y1="9" x2="21" y2="9" />
+                    <line x1="9" y1="21" x2="9" y2="9" />
+                  </svg>
+                  Dashboard
+                </button>
+                <button
+                  onClick={() => {
+                    setShowLogoutModal(true);
                     setShowUserDropdown(false);
                   }}
                   className="w-full text-left px-4 py-2 font-black text-sm uppercase hover:bg-[#BEF264] transition-colors flex items-center gap-2"
@@ -398,6 +415,42 @@ export default function Home() {
           </button>
         )}
       </nav>
+
+      {/* Custom Logout Modal */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setShowLogoutModal(false)}></div>
+          <div className="relative w-full max-w-md animate-in fade-in zoom-in duration-200 text-left">
+            <div className="absolute inset-0 bg-black translate-x-[8px] translate-y-[8px] border-[4px] border-black"></div>
+            <div className="relative bg-white border-[4px] border-black p-8 text-center">
+              <div className="w-16 h-16 bg-[#BEF264] border-[3px] border-black mx-auto mb-6 flex items-center justify-center rotate-6">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+              </div>
+              <h3 className="text-3xl font-black italic tracking-tighter mb-4 uppercase">Peace Out?</h3>
+              <p className="font-bold text-zinc-500 mb-8 italic">Are you sure you want to log out? We&apos;ll miss having you around!</p>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <button 
+                  onClick={() => setShowLogoutModal(false)}
+                  className="bg-white text-black font-black py-3 border-[3px] border-black hover:bg-zinc-100 transition-all uppercase text-sm"
+                >
+                  Stay
+                </button>
+                <button 
+                  onClick={handleLogout}
+                  className="bg-black text-white font-black py-3 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all uppercase text-sm"
+                >
+                  Log Out
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Hero Section */}
       <main className="relative bg-[#5E5CE6] h-[650px] border-b-4 border-black pt-30 mt-18">
