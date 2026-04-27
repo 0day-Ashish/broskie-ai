@@ -34,8 +34,6 @@ export async function GET(request, { params }) {
     const pageHeight = 841.89;
     const margin = 50;
     const maxWidth = pageWidth - margin * 2;
-    const lineHeight = 14;
-    const headerHeight = 20;
 
     let page = pdfDoc.addPage([pageWidth, pageHeight]);
     let y = pageHeight - margin;
@@ -45,61 +43,62 @@ export async function GET(request, { params }) {
       y = pageHeight - margin;
     };
 
-    // Word-wrap text to fit within maxWidth
-    const wrapText = (text, font, size) => {
+    const drawText = (text, font, size, indent = 0, color = rgb(0.15, 0.15, 0.15)) => {
       const words = text.split(' ');
-      const lines = [];
       let currentLine = '';
 
       for (const word of words) {
         const testLine = currentLine ? `${currentLine} ${word}` : word;
         const testWidth = font.widthOfTextAtSize(testLine, size);
 
-        if (testWidth > maxWidth - 20) {
-          if (currentLine) lines.push(currentLine);
+        if (testWidth > maxWidth - indent) {
+          if (y < margin + 20) addNewPage();
+          page.drawText(currentLine, {
+            x: margin + indent,
+            y,
+            size,
+            font,
+            color,
+          });
+          y -= size + 4;
           currentLine = word;
         } else {
           currentLine = testLine;
         }
       }
-      if (currentLine) lines.push(currentLine);
-      return lines;
-    };
-
-    const drawText = (text, font, size, indent = 0) => {
-      const wrappedLines = wrapText(text, font, size);
-      for (const line of wrappedLines) {
+      if (currentLine) {
         if (y < margin + 20) addNewPage();
-        page.drawText(line, {
+        page.drawText(currentLine, {
           x: margin + indent,
           y,
           size,
           font,
-          color: rgb(0.1, 0.1, 0.1),
+          color,
         });
-        y -= lineHeight;
+        y -= size + 4;
       }
     };
 
-    const drawHeader = (text) => {
-      y -= 8;
-      if (y < margin + 30) addNewPage();
+    const drawSectionHeader = (text) => {
+      y -= 12;
+      if (y < margin + 40) addNewPage();
+      
       page.drawText(text.toUpperCase(), {
         x: margin,
         y,
-        size: 11,
+        size: 12,
         font: helveticaBold,
         color: rgb(0, 0, 0),
       });
+      
       y -= 4;
-      // Draw underline
       page.drawLine({
         start: { x: margin, y },
         end: { x: pageWidth - margin, y },
-        thickness: 1,
-        color: rgb(0, 0, 0),
+        thickness: 0.8,
+        color: rgb(0.75, 0.75, 0.75),
       });
-      y -= lineHeight;
+      y -= 16;
     };
 
     // Parse and render resume
@@ -115,39 +114,60 @@ export async function GET(request, { params }) {
       }
 
       // Detect section headers
-      const isHeader = /^[A-Z][A-Z\s&\/]+$/.test(trimmed) ||
-        ['summary', 'experience', 'education', 'skills', 'projects', 'certifications', 
-         'contact', 'technical skills', 'work experience', 'professional experience',
-         'professional summary', 'core competencies', 'awards', 'interests']
-          .some(h => trimmed.toLowerCase() === h || trimmed.toLowerCase().startsWith(h + ':'));
+      const headers = ['EXPERIENCE', 'EDUCATION', 'SKILLS', 'PROJECTS', 'SUMMARY', 'CERTIFICATIONS', 'TECHNICAL SKILLS', 'WORK EXPERIENCE'];
+      const isHeader = (trimmed.length < 40 && (
+        trimmed === trimmed.toUpperCase() || 
+        headers.some(h => trimmed.toUpperCase().startsWith(h))
+      ));
 
       if (isFirstLine && trimmed.length < 60) {
         // Name — large bold
         page.drawText(trimmed, {
           x: margin,
           y,
-          size: 20,
+          size: 22,
           font: helveticaBold,
           color: rgb(0, 0, 0),
         });
-        y -= 26;
+        y -= 25;
+        
+        // Job Title / Meta
+        page.drawText(`${role} | Tailored for ${company}`, {
+          x: margin,
+          y,
+          size: 10,
+          font: helvetica,
+          color: rgb(0.37, 0.36, 0.9), // Indigo
+        });
+        y -= 25;
         isFirstLine = false;
       } else if (isHeader) {
         isFirstLine = false;
-        drawHeader(trimmed);
+        drawSectionHeader(trimmed);
       } else if (trimmed.startsWith('*') || trimmed.startsWith('•') || trimmed.startsWith('-') || trimmed.startsWith('–')) {
         isFirstLine = false;
         const bulletText = trimmed.replace(/^[\*•\-–]\s*/, '');
         drawText(`• ${bulletText}`, helvetica, 9.5, 10);
-      } else if (trimmed.includes('|') && trimmed.length < 120) {
-        // Contact info or job title line
-        isFirstLine = false;
-        drawText(trimmed, helvetica, 9, 0);
       } else {
         isFirstLine = false;
         drawText(trimmed, helvetica, 9.5, 0);
       }
+      y -= 2;
     }
+
+    // Add footer
+    const pages = pdfDoc.getPages();
+    pages.forEach((p, idx) => {
+      const footerText = `Broskie.ai - Tailored AI Job Application | Page ${idx + 1}`;
+      const footerWidth = helvetica.widthOfTextAtSize(footerText, 8);
+      p.drawText(footerText, {
+        x: (pageWidth - footerWidth) / 2,
+        y: 20,
+        size: 8,
+        font: helvetica,
+        color: rgb(0.6, 0.6, 0.6)
+      });
+    });
 
     const pdfBytes = await pdfDoc.save();
     const filename = `Resume_${company}_${role}.pdf`.replace(/[^a-zA-Z0-9._-]/g, '_');
