@@ -59,12 +59,28 @@ export async function POST(request) {
     const results = [];
     let appliedCount = 0;
 
+    // Fetch user's real name if needed
+    let realName = applicant?.name;
+    if (!realName && parsedUserId) {
+      try {
+        const users = await sql`SELECT name FROM users WHERE id = ${parsedUserId}`;
+        if (users.length > 0) realName = users[0].name;
+      } catch (err) {
+        console.error("DB user fetch error:", err.message);
+      }
+    }
+
+    const finalApplicant = {
+      ...applicant,
+      name: realName || 'Candidate'
+    };
+
     for (const job of matchedJobs) {
       console.log(`   → Processing: ${job.title} at ${job.company}`);
 
       // Tailor resume
-      console.log(`     ✏️  Tailoring resume for ${applicant?.name || 'applicant'}...`);
-      const tailoredResume = await tailorResume(resumeText, job, applicant);
+      console.log(`     ✏️  Tailoring resume for ${finalApplicant.name}...`);
+      const tailoredResume = await tailorResume(resumeText, job, finalApplicant);
 
       // Apply
       console.log(`     📨 Applying...`);

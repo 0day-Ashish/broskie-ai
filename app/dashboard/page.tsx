@@ -536,6 +536,68 @@ export default function Dashboard() {
                 </div>
               </div>
 
+              {/* Identity Verification Section */}
+              {uploadStatus === 'success' && applicantDetails && (
+                <div className="mt-8 border-[3px] border-black p-6 bg-white animate-in slide-in-from-top-4 duration-300">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-8 h-8 bg-[#BEF264] border-2 border-black flex items-center justify-center -rotate-3">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-black uppercase italic tracking-tight">Identity Verification</h3>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-zinc-400 mb-1">Full Name</label>
+                      <input 
+                        type="text" 
+                        value={applicantDetails.name || ''} 
+                        onChange={(e) => setApplicantDetails({...applicantDetails, name: e.target.value})}
+                        className="w-full border-2 border-black p-3 font-black text-sm outline-none focus:bg-[#BEF264]/10 transition-colors"
+                        placeholder="Your Legal Name"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-zinc-400 mb-1">Contact Email</label>
+                      <input 
+                        type="email" 
+                        value={applicantDetails.email || ''} 
+                        onChange={(e) => setApplicantDetails({...applicantDetails, email: e.target.value})}
+                        className="w-full border-2 border-black p-3 font-black text-sm outline-none focus:bg-[#BEF264]/10 transition-colors"
+                        placeholder="email@example.com"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-zinc-400 mb-1">Phone Number</label>
+                      <input 
+                        type="text" 
+                        value={applicantDetails.phone || ''} 
+                        onChange={(e) => setApplicantDetails({...applicantDetails, phone: e.target.value})}
+                        className="w-full border-2 border-black p-3 font-black text-sm outline-none focus:bg-[#BEF264]/10 transition-colors"
+                        placeholder="+1 234 567 890"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-zinc-400 mb-1">Location</label>
+                      <input 
+                        type="text" 
+                        value={applicantDetails.location || ''} 
+                        onChange={(e) => setApplicantDetails({...applicantDetails, location: e.target.value})}
+                        className="w-full border-2 border-black p-3 font-black text-sm outline-none focus:bg-[#BEF264]/10 transition-colors"
+                        placeholder="City, Country"
+                      />
+                    </div>
+                  </div>
+                  
+                  <p className="mt-6 text-[10px] font-bold text-zinc-400 italic">
+                    * The Agent uses these details for tailoring. Please ensure they match your legal identity.
+                  </p>
+                </div>
+              )}
+
               {/* Advanced Toggle */}
               <div className="mt-8">
                 <button 

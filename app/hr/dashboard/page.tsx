@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function HRDashboard() {
   const router = useRouter();
@@ -159,12 +160,12 @@ export default function HRDashboard() {
         </div>
 
         <div className="flex items-center gap-4">
-          <button 
-            onClick={() => router.push("/")}
-            className="hidden md:block font-black uppercase text-xs hover:text-[#5E5CE6] transition-colors"
+          <Link 
+            href="/"
+            className="font-black uppercase text-xs hover:text-[#5E5CE6] transition-colors"
           >
             Back to Home
-          </button>
+          </Link>
           <span className="font-black text-sm border-2 border-black px-4 py-2 bg-[#BEF264] tracking-tight">
             {userName}
           </span>

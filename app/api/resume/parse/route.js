@@ -1,4 +1,7 @@
 import { NextResponse } from "next/server";
+import pdf from "pdf-parse/lib/pdf-parse.js";
+
+export const runtime = "nodejs";
 
 export async function POST(request) {
   try {
@@ -13,12 +16,19 @@ export async function POST(request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Extract text from PDF
-    const { PDFParse } = await import("pdf-parse");
-    const parser = new PDFParse({ data: buffer });
-    const data = await parser.getText();
-    await parser.destroy();
-    const resumeText = data.text;
+    // Extract text using stable pdf-parse v1.1.1
+    const data = await pdf(buffer);
+    
+    // Clean messy PDF text
+    const cleanText = (text) => {
+      return text
+        .replace(/\n\s*\n/g, "\n") // remove extra gaps
+        .replace(/\s+/g, " ")      // normalize spaces
+        .trim();
+    };
+
+    const resumeText = cleanText(data.text);
+    const pagesCount = data.numpages;
 
     // Use Gemini to extract applicant details
     const { callGeminiJSON } = require("@/lib/ai");
@@ -53,7 +63,7 @@ Return JSON:
 
     return NextResponse.json({
       text: resumeText,
-      pages: data.total,
+      pages: pagesCount,
       applicant: applicantDetails
     });
   } catch (error) {

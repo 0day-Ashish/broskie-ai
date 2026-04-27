@@ -228,10 +228,7 @@ export default function Home() {
             )}
 
             <form className="space-y-6" onSubmit={(e) => {
-              // Set role based on authMode before calling handleAuth
               const role = authMode.includes('hr') ? 'hr' : 'user';
-              // We need to pass the role or use it in handleAuth. 
-              // Since handleAuth is already defined, let's modify it to use a role parameter or check authMode.
               handleAuth(e);
             }}>
               {authMode.includes('signup') && (
@@ -241,7 +238,7 @@ export default function Home() {
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="John Doe"
+                    placeholder="Your Name"
                     className="w-full bg-white border-[3px] border-black py-2 px-4 font-bold outline-none transition-colors text-black placeholder:text-zinc-400"
                   />
                 </div>
@@ -252,7 +249,7 @@ export default function Home() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@company.com"
+                  placeholder="example@email.com"
                   className="w-full bg-white border-[3px] border-black py-2 px-4 font-bold outline-none transition-colors text-black placeholder:text-zinc-400"
                   required
                 />
@@ -306,7 +303,7 @@ export default function Home() {
                   <>
                     <span>Don&apos;t have an account? <span className="underline cursor-pointer hover:text-[#5E5CE6]" onClick={() => { setAuthMode('signup'); setAuthError(''); }}>Sign up now</span></span>
                     <span className="text-xs opacity-60">or</span>
-                    <span className="underline cursor-pointer hover:text-[#5E5CE6] text-xs" onClick={() => { setAuthMode('hr-login'); setAuthError(''); }}>Are you an HR? Login here</span>
+                    <span className="underline cursor-pointer hover:text-[#5E5CE6] text-xs" onClick={() => { setAuthMode('hr-login'); setAuthError(''); }}>Are you an HR?  Login here</span>
                   </>
                 ) : authMode === 'signup' ? (
                   <>
@@ -849,7 +846,7 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-xs font-black uppercase text-white/60">EMAIL US:</p>
-                  <p className="text-lg font-bold text-white">arif@retroui.dev</p>
+                  <p className="text-lg font-bold text-white">contact@broskie.ai</p>
                 </div>
               </div>
               <div className="flex items-center gap-6">
@@ -858,7 +855,7 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-xs font-black uppercase text-white/60">CALL US:</p>
-                  <p className="text-lg font-bold text-white">+1 (234) 567-8900</p>
+                  <p className="text-lg font-bold text-white">+91 8910114007</p>
                 </div>
               </div>
               <div className="flex items-center gap-6">
@@ -867,7 +864,7 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-xs font-black uppercase text-white/60">VISIT US:</p>
-                  <p className="text-lg font-bold text-white leading-tight">123 Innovation Street<br />Tech District, CA 90210</p>
+                  <p className="text-lg font-bold text-white leading-tight">Broskie.<span className="italic">ai</span><br />Infinity Think Tank, Saltlake Sector-V, Kol-700106</p>
                 </div>
               </div>
             </div>
