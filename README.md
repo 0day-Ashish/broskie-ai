@@ -1,85 +1,93 @@
-# Broskie.ai 🚀
+<div align="center">
+  <img src="https://img.shields.io/badge/BROSKIE-AI-BEF264?style=for-the-badge&labelColor=000000" alt="Broskie.ai" />
+  <img src="https://img.shields.io/badge/JOB-AUTOMATION-000000?style=for-the-badge&labelColor=5E5CE6" alt="Automation" />
+</div>
 
-**Broskie.ai** is a high-fidelity, AI-powered job application ecosystem designed to automate the grunt work of job hunting for candidates and simplify recruitment for HR managers. Built with a **"Brutal" design philosophy**, it offers a high-contrast, high-performance experience.
+<br />
 
-![Broskie.ai Landing Page](https://via.placeholder.com/1200x600/BEF264/000000?text=BROSKIE.AI+LANDING+PAGE)
+<div align="center">
+  <h1>🚀 Broskie.ai</h1>
+  <p><strong>AI-powered job application ecosystem — automated job scanning, resume tailoring, recruiter management & more</strong></p>
 
-## 🌟 Key Features
+  <div>
+    <img src="https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js" alt="Next.js" />
+    <img src="https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react" alt="React" />
+    <img src="https://img.shields.io/badge/Neon-Postgres-00E699?style=flat-square&logo=neon" alt="Neon" />
+    <img src="https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=flat-square&logo=tailwind-css" alt="Tailwind" />
+    <img src="https://img.shields.io/badge/License-MIT-BEF264?style=flat-square" alt="License" />
+  </div>
+</div>
 
-### For Candidates (The "Broskies")
-- **AI Job Agent**: Let the agent scan thousands of jobs and apply on your behalf with a single query.
-- **Automated Resume Tailoring**: Our AI analyzes the job description and your profile to generate a perfectly tailored resume for every application.
-- **Match Scoring**: Get instant feedback on how well you fit a role with AI-generated match scores and detailed reasoning.
-- **Real-time Notifications**: Receive instant alerts in your dashboard when an HR manager shortlists you.
-- **Application Tracking**: A dedicated dashboard to monitor the status of every application in real-time.
+---
 
-### For HR Managers
-- **Job Control Center**: Create, edit, and manage high-fidelity job postings with ease.
-- **Intelligent Applicant Screening**: View applicants sorted by AI match scores. Review tailored resumes that highlight the most relevant skills for your specific role.
-- **One-Click Pipeline Management**: Shortlist or reject candidates with a single click, triggering instant notifications for the applicants.
-- **Dedicated HR Portal**: A secure, isolated environment for professional recruitment operations.
+## 📖 What is Broskie.ai?
+
+**Broskie.ai** is a full-stack job application platform that combines high-fidelity AI agents with a robust recruitment portal to help users land their dream roles with zero manual effort.
+
+**Core capabilities:**
+- **Autonomous Job Agents**: Scans thousands of sources to find matches tailored to your specific query.
+- **Dynamic Resume Tailoring**: Automatically modifies your resume for every single job to maximize ATS compatibility.
+- **HR Control Center**: Provides recruiters with a premium dashboard to manage jobs and view AI-ranked applicants.
+- **Intelligent Matching**: Uses LLMs to provide match scores and detailed reasoning for every application.
+
+---
+
+## ✨ Features
+
+### 👤 For Candidates
+- **Dashboard Control**: Track all AI-driven applications in one high-contrast interface.
+- **Instant Notifications**: Get notified the moment an HR manager shortlists your profile.
+- **Agent History**: Review every job the agent has applied to on your behalf.
+
+### 💼 For Recruiters
+- **Job Management**: Create, edit, and delete postings in a sleek "Brutal" UI.
+- **Applicant Screening**: View candidates with pre-calculated AI match scores and tailored resumes.
+- **Direct Pipeline**: Shortlist or reject candidates with instant sync to the candidate's dashboard.
+
+---
 
 ## 🎨 Design Philosophy: "The Brutal System"
-Broskie.ai isn't just another boring SaaS. It uses a **Brutalism-inspired UI**:
-- **High Contrast**: Pure white backgrounds with deep black borders (`border-[4px]`).
-- **Neon Accents**: Vibrant `#BEF264` (Lime) and `#5E5CE6` (Indigo) for primary actions.
-- **Brutal Shadows**: Thick, non-blurred shadows (`shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]`) that make elements pop.
-- **Bold Typography**: Heavy black fonts and uppercase tracking for an aggressive, modern feel.
+
+Broskie.ai uses a **Brutalism-inspired design system** designed to be loud, clear, and high-performance:
+- **Bold Borders**: Consistent 4px black borders on all interactive elements.
+- **Vibrant Palette**: Utilizing `#BEF264` (Lime) and `#5E5CE6` (Indigo) against stark backgrounds.
+- **Hard Shadows**: Non-blurred 8px shadows for maximum depth and character.
+
+---
 
 ## 🛠 Tech Stack
-- **Framework**: [Next.js 15+](https://nextjs.org/) (App Router)
-- **Database**: [Neon Postgres](https://neon.tech/) (Serverless)
-- **Styling**: Tailwind CSS + Vanilla CSS
-- **Authentication**: Custom JWT-based Auth with Role-Based Access Control (RBAC)
-- **AI Integration**: Custom LLM integration for resume tailoring and job matching.
+
+- **Frontend**: Next.js 15 (App Router), TypeScript, Tailwind CSS.
+- **Backend**: Next.js Serverless Functions, JWT Authentication.
+- **Database**: Neon Postgres (Serverless) via HTTP transport.
+- **AI**: Custom LLM integration for resume optimization and scoring.
+
+---
 
 ## 🚀 Getting Started
 
-### Prerequisites
-- Node.js 20+
-- A Neon Postgres Database URL
-- JWT Secret for session management
-
 ### Installation
-1. Clone the repository:
+
+1. **Clone the repository**
    ```bash
    git clone https://github.com/0day-Ashish/broskie-ai.git
-   cd broskie-ai
    ```
 
-2. Install dependencies:
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-3. Set up environment variables (`.env.local`):
-   ```env
-   DATABASE_URL=your_neon_postgres_url
-   JWT_SECRET=your_super_secret_key
-   ```
+3. **Configure Environment**
+   Create a `.env.local` and add your `DATABASE_URL` and `JWT_SECRET`.
 
-4. Initialize the database:
-   *(Note: The system automatically checks for table existence on startup via the `lib/db.ts` initialization logic.)*
-
-5. Run the development server:
+4. **Launch**
    ```bash
    npm run dev
    ```
 
-## 📂 Project Structure
-- `app/`: Next.js App Router pages and API routes.
-  - `api/auth/`: Login and Signup logic for Users and HRs.
-  - `api/hr/`: Protected routes for HR operations.
-  - `dashboard/`: The candidate's control center.
-  - `hr/dashboard/`: The HR recruitment portal.
-- `lib/`: Core utilities including database connection and shared logic.
-- `components/`: Reusable Brutal-style UI components.
-
-## 🤝 Contributing
-Contributions are welcome! Whether it's a bug fix, feature request, or design improvement, feel free to open a PR.
-
-## 📄 License
-This project is licensed under the MIT License.
-
 ---
-Built with ⚡ by the Broskie.ai Team.
+
+<div align="center">
+  <p>Built with ⚡ by the Broskie.ai Team</p>
+</div>
